@@ -25,16 +25,35 @@ slack.on('/greet', (msg, bot) => {
   };
 
   // ephemeral reply
-  bot.replyPrivate(message); 
+  bot.replyPrivate(message);
 });
+
+slack.on('/register', (msg, bot) => {
+    let message = {
+      text: "How would you like to greet the channel?",
+      attachments: [{
+        fallback: 'actions',
+        callback_id: "greetings_click",
+        actions: [
+          { type: "button", name: "Wave", text: ":wave:", value: ":wave:" },
+          { type: "button", name: "Hello", text: "Hello", value: "Hello" },
+          { type: "button", name: "Howdy", text: "Howdy", value: "Howdy" },
+          { type: "button", name: "Hiya", text: "Hiya", value: "Hiya" }
+        ]
+      }]
+    };
+
+    // ephemeral reply
+    bot.replyPrivate(message);
+})
 
 
 // Interactive Message handler
 slack.on('greetings_click', (msg, bot) => {
-  let message = { 
+  let message = {
     // selected button value
-    text: msg.actions[0].value 
-  };  
+    text: msg.actions[0].value
+  };
 
   // public reply
   bot.reply(message);
@@ -43,7 +62,7 @@ slack.on('greetings_click', (msg, bot) => {
 
 // Reaction Added event handler
 slack.on('reaction_added', (msg, bot) => {
-  bot.reply({ 
-    text: ':wave:' 
+  bot.reply({
+    text: ':wave:'
   });
 });
